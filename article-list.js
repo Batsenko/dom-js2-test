@@ -7,7 +7,6 @@ function createElementFromHTML(htmlString) {
   return div.firstChild; 
 }
 
-
 class ArticleList {
 	
 	constructor(container) {
@@ -20,10 +19,10 @@ class ArticleList {
 	}
 	
 	removeArticle(article) {
-		this.articleList = this.articleList.slice(-1, 1);
+		this.articleList = this.articleList.filter(item => item !== article);
 	}
 	
-	render() {
+	render(query = null) {
 		var child = this.container.lastElementChild;  
         while (child) { 
             this.container.removeChild(child); 
@@ -33,17 +32,27 @@ class ArticleList {
 		for(let i = 0; i < this.articleList.length; i++) {
 			const article = this.articleList[i];
 			
+			if(query != null && !article.matches(query)) {
+				continue;
+			}					
+			
 			let div = document.createElement("div");
+			div.className = "newsItem";
+			
 			let title = document.createElement("h1");
 			title.innerText = article.title;
+			
 			let name = document.createElement("h3");
 			name.innerText = article.author;
+			
 			let text = createElementFromHTML(article.text);
+			
 			let removeButton = document.createElement("a");
 			removeButton.href = "#";
 			removeButton.innerText = "☓";
-			removeButton.addEventListener("click", () => {
-				this.container.removeChild(div);
+			removeButton.addEventListener("click", () => {				
+				this.removeArticle(article);
+				this.render(query);
 			});
 			
 			div.appendChild(title);
@@ -54,4 +63,6 @@ class ArticleList {
 			this.container.appendChild(div);
 		}
 	}
+	
+	
 }

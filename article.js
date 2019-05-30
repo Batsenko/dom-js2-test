@@ -7,7 +7,9 @@ class Article {
 	}
 	
 	matches(query) {
-		if(this.title.indexOf(query) >= 0 || this.author.indexOf(query) >= 0 || this.text.indexOf(query) >= 0) return true;
+		if(this.title.indexOf(query) >= 0 
+			|| this.author.indexOf(query) >= 0 
+			|| this.text.indexOf(query) >= 0) return true;
 		return false;
 	}
 }
